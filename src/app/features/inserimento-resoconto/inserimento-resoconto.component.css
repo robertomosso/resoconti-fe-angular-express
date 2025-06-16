@@ -1,0 +1,64 @@
+:host {
+  width: 45rem;
+}
+
+.header {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.logout-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}
+
+.logout-button {
+  margin-right: 1rem;
+}
+
+h1 {
+  margin: 0;
+  padding-bottom: 1rem;
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  padding: 0 1rem 1rem 1rem;
+}
+
+mat-form-field {
+  width: 80%;
+  margin: auto;
+  margin-top: 2rem;
+}
+
+.date-container {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  margin: auto;
+}
+
+.input-date {
+  width: 48%;
+  margin: 0;
+  margin-top: 2.5rem;
+}
+
+textarea {
+  min-height: 5rem;
+}
+
+.button-row {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}

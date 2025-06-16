@@ -1,0 +1,15 @@
+<!-- <header>
+  <h1>Resoconti</h1>
+</header> -->
+
+@if (spinnerService.showSpinner | async) {
+<div class="spinner">
+  <mat-spinner></mat-spinner>
+</div>
+}
+
+<main>
+  <section>
+    <router-outlet></router-outlet>
+  </section>
+</main>
