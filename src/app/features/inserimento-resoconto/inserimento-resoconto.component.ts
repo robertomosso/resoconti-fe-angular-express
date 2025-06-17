@@ -6,6 +6,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { HttpErrorResponse } from '@angular/common/http';
 
 import { formatDateToUsDate } from '../../shared/utils/date-formatter';
 import { CardComponent } from '../../shared/components/card/card.component';
@@ -13,9 +14,7 @@ import { InserimentoResocontoService } from './inserimento-resoconto.service';
 import { Resoconto } from '../../shared/interfaces/resoconto';
 import { SnackbarService } from '../../shared/services/snackbar.service';
 import { ErrorHandlerService } from '../../shared/services/error-handler.service';
-import { SpinnerService } from '../../shared/services/spinner.service';
 import { AuthService } from '../../core/auth.service';
-import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-inserimento-resoconto',
@@ -40,7 +39,6 @@ export class InserimentoResocontoComponent implements OnInit {
     private readonly inserimentoResocontoService: InserimentoResocontoService,
     private readonly snackbarService: SnackbarService,
     private readonly errorHandlerService: ErrorHandlerService,
-    private readonly spinnerService: SpinnerService,
   ) { }
 
   userName = signal('');
@@ -78,11 +76,13 @@ export class InserimentoResocontoComponent implements OnInit {
     this.getUltimoResocontoByUser();
   }
 
+  // funzione che setta e valorizza i campi dataInizio e dataFine con formato 'yyyy-mm-dd'
   setWeekDates() {
     let startOfWeek = new Date();
     let endOfWeek = new Date();
-    let dayOfWeek = startOfWeek.getDay();
+    let dayOfWeek = startOfWeek.getDay(); // es. 1 per lunedì
 
+    // calcolo delle date di lunedì e venerdì della settimana in corso
     startOfWeek.setDate(startOfWeek.getDate() - dayOfWeek + 1);
     endOfWeek.setDate(endOfWeek.getDate() - dayOfWeek + 5);
 
@@ -94,39 +94,43 @@ export class InserimentoResocontoComponent implements OnInit {
   }
 
   getUltimoResocontoByUser() {
-    this.inserimentoResocontoService.getUltimoResocontoByUser().subscribe({
-      next: (res) => {
-        this.ultimoResoconto = res;
+    this.inserimentoResocontoService.getUltimoResocontoByUser()
+      .subscribe({
+        next: (res) => {
+          this.ultimoResoconto = res;
 
-        // il form viene valorizzato solo se le date correnti corrispondono con l'ultimo resoconto trovato di quell'utente
-        if (this.ultimoResoconto) {
-          this.form.patchValue({
-            tipoAttivita: this.ultimoResoconto.tipoAttivita,
-            attivita: this.ultimoResoconto.attivita,
-            descrizione: this.ultimoResoconto.descrizione,
-            personaRiferimento: this.ultimoResoconto.personaRiferimento,
-            cliente: this.ultimoResoconto.cliente,
-            colleghiSI: this.ultimoResoconto.colleghiSI,
-            note: this.ultimoResoconto.note,
-          });
+          // se c'è ultimoResoconto il form viene prevalorizzato con i suoi valori
+          if (this.ultimoResoconto) {
+            this.form.patchValue({
+              tipoAttivita: this.ultimoResoconto.tipoAttivita,
+              attivita: this.ultimoResoconto.attivita,
+              descrizione: this.ultimoResoconto.descrizione,
+              personaRiferimento: this.ultimoResoconto.personaRiferimento,
+              cliente: this.ultimoResoconto.cliente,
+              colleghiSI: this.ultimoResoconto.colleghiSI,
+              note: this.ultimoResoconto.note,
+            });
 
-          const dataInizio = this.form.get('dataInizio')?.value;
-          const dataFine = this.form.get('dataFine')?.value;
+            const dataInizio = this.form.get('dataInizio')?.value;
+            const dataFine = this.form.get('dataFine')?.value;
 
-          if (
-            dataInizio === this.ultimoResoconto.dataInizio &&
-            dataFine === this.ultimoResoconto.dataFine
-          ) {
-            this.resocontoGiaInserito();
+            // se le date di ultimoResoconto corrispondono alle date dell'attuale settimana il form verrà disabilitato,
+            // verrà rimosso il pulsante di submit e verrà cambiato il messaggio sopra il form
+            if (
+              dataInizio === this.ultimoResoconto.dataInizio &&
+              dataFine === this.ultimoResoconto.dataFine
+            ) {
+              this.resocontoGiaInserito();
+            }
+          }
+        },
+        error: (err: HttpErrorResponse) => {
+          // se l'errore è di tipo 404 e non ci sono ancora resoconti inseriti non serve mostrare la snackbar di errore
+          if (err.status !== 404) {
+            this.snackbarService.openSnackbar(err.error?.message || 'Errore del server');
           }
         }
-      },
-      error: (err: HttpErrorResponse) => {
-        if (err.status !== 404) {
-          this.snackbarService.openSnackbar(err.error?.message || 'Errore del server');
-        }
-      }
-    })
+      })
   }
 
   onSubmit() {
@@ -151,19 +155,16 @@ export class InserimentoResocontoComponent implements OnInit {
   }
 
   inserisciResoconto(body: Partial<Resoconto>) {
-    this.spinnerService.showSpinner.next(true);
-
-    this.inserimentoResocontoService.inserisciResoconto(body).subscribe({
-      next: () => {
-        this.snackbarService.openSnackbar('Inserimento avvenuto con successo!');
-        this.resocontoGiaInserito();
-        this.spinnerService.showSpinner.next(false);
-      },
-      error: (err) => {
-        this.spinnerService.showSpinner.next(false);
-        this.errorHandlerService.handleErrors(err);
-      }
-    });
+    this.inserimentoResocontoService.inserisciResoconto(body)
+      .subscribe({
+        next: () => {
+          this.resocontoGiaInserito();
+          this.snackbarService.openSnackbar('Inserimento avvenuto con successo!');
+        },
+        error: (err) => {
+          this.errorHandlerService.handleErrors(err);
+        }
+      });
   }
 
   private resocontoGiaInserito(): void {

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
 import { SnackbarService } from '../shared/services/snackbar.service';
-import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
 import { LoginResponse } from '../shared/interfaces/login-response';
 import { UserModel } from '../shared/interfaces/user';
 import { environment } from '../../environments/environment.prod';

@@ -9,7 +9,6 @@ import { AuthService } from '../../core/auth.service';
 import { CardComponent } from '../../shared/components/card/card.component';
 import { SnackbarService } from '../../shared/services/snackbar.service';
 import { ErrorHandlerService } from '../../shared/services/error-handler.service';
-import { SpinnerService } from '../../shared/services/spinner.service';
 
 @Component({
   selector: 'app-login',
@@ -29,24 +28,13 @@ export class LoginComponent implements OnInit {
 
   form!: FormGroup;
 
-  get emailFormControl() {
-    return this.form.get('email');
-  }
-
-  get passwordFormControl() {
-    return this.form.get('password');
-  }
-
   constructor(
     private readonly fb: FormBuilder,
-    private readonly spinnerService: SpinnerService,
     private readonly authService: AuthService,
     private readonly snackbarService: SnackbarService,
     private readonly router: Router,
     private readonly errorHandlerService: ErrorHandlerService,
   ) { }
-
-  // TODO per eventuale registrazione includere controllo su mail, dovrà contentere @softwareindustriale.it
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -59,24 +47,21 @@ export class LoginComponent implements OnInit {
     const { email, password } = this.form.getRawValue();
 
     if (email && password) {
-      this.spinnerService.showSpinner.next(true);
       this.authService.login(email, password)
         .subscribe({
           next: (res) => {
+            this.snackbarService.openSnackbar(res.message, 3000);
+
             this.authService.token = res.token;
             this.authService.user = res.user;
 
-            this.spinnerService.showSpinner.next(false);
-            this.snackbarService.openSnackbar(res.message, 3000);
-
-            if (this.authService.user.mustChangePassword) {
+            if (this.authService.user?.mustChangePassword) {
               this.router.navigate(['change-password']);
             } else {
               this.router.navigate(['inserimento-resoconto']);
             }
           },
-          error: (err: any) => {
-            this.spinnerService.showSpinner.next(false);
+          error: (err) => {
             this.errorHandlerService.handleErrors(err);
           }
         });

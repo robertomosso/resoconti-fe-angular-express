@@ -4,10 +4,10 @@
       <mat-label>Email</mat-label>
       <input matInput type="text" formControlName="email">
 
-      @if (emailFormControl?.hasError('required')) {
+      @if (this.form.get('email')?.hasError('required')) {
       <mat-error>Il campo è richiesto</mat-error>
       }
-      @if (emailFormControl?.hasError('email')) {
+      @if (this.form.get('email')?.hasError('email')) {
       <mat-error>Inserire una email valida</mat-error>
       }
     </mat-form-field>
@@ -16,13 +16,13 @@
       <mat-label>Password</mat-label>
       <input matInput type="password" formControlName="password">
 
-      @if (passwordFormControl?.hasError('required')) {
+      @if (this.form.get('password')?.hasError('required')) {
       <mat-error>Il campo è richiesto</mat-error>
       }
-      @else if (passwordFormControl?.hasError('minlength')) {
+      @else if (this.form.get('password')?.hasError('minlength')) {
       <mat-error>Inserire minimo 8 caratteri</mat-error>
       }
-      @else if (passwordFormControl?.hasError('maxlength')) {
+      @else if (this.form.get('password')?.hasError('maxlength')) {
       <mat-error>Inserire massimo 16 caratteri</mat-error>
       }
     </mat-form-field>

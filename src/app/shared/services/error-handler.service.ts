@@ -12,7 +12,8 @@ export class ErrorHandlerService {
 
   handleErrors(error: unknown) {
     if (error instanceof HttpErrorResponse) {
-      this.snackbarService.openSnackbar(error.error.message);
+      const message = error.error?.message || 'Si è verificato un errore';
+      this.snackbarService.openSnackbar(message);
     } else {
       this.snackbarService.openSnackbar('Si è verificato un errore');
     }

@@ -5,5 +5,14 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class SpinnerService {
-  showSpinner = new BehaviorSubject(false);
+  private showSpinner = new BehaviorSubject(false);
+  showSpinnerObs = this.showSpinner.asObservable();
+
+  show() {
+    this.showSpinner.next(true);
+  }
+  
+  hide() {
+    this.showSpinner.next(false);
+  }
 }

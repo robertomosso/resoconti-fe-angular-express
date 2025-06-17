@@ -27,7 +27,6 @@ import { ErrorHandlerService } from '../../shared/services/error-handler.service
 export class ChangePasswordComponent {
 
   form!: FormGroup;
-  passwordResetToken!: string;
 
   constructor(
     private readonly fb: FormBuilder,
@@ -49,16 +48,17 @@ export class ChangePasswordComponent {
     const { email, currentPassword, newPassword } = this.form.getRawValue();
 
     if (email && currentPassword && newPassword) {
-      this.authService.changePassword(email, currentPassword, newPassword).subscribe({
-        next: (res) => {
-          this.authService.user = res.user;
-          this.snackbarService.openSnackbar('Password aggiornata correttamente');
-          this.router.navigate(['inserimento-resoconto']);
-        },
-        error: (err) => {
-          this.errorHandlerService.handleErrors(err);
-        }
-      });
+      this.authService.changePassword(email, currentPassword, newPassword)
+        .subscribe({
+          next: (res) => {
+            this.authService.user = res.user;
+            this.snackbarService.openSnackbar('Password aggiornata correttamente', 3000);
+            this.router.navigate(['inserimento-resoconto']);
+          },
+          error: (err) => {
+            this.errorHandlerService.handleErrors(err);
+          }
+        });
     } else {
       this.snackbarService.openSnackbar('Inserire tutti i dati correttamente');
     }

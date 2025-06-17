@@ -1,8 +1,4 @@
-<!-- <header>
-  <h1>Resoconti</h1>
-</header> -->
-
-@if (spinnerService.showSpinner | async) {
+@if (spinnerService.showSpinnerObs | async) {
 <div class="spinner">
   <mat-spinner></mat-spinner>
 </div>
