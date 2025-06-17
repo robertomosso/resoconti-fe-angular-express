@@ -8,9 +8,9 @@
       <p>{{message()}}</p>
     </div>
   </div>
-  
+
   <form class="form-container" [formGroup]="form" (ngSubmit)="onSubmit()">
-      
+
     <div class="date-container">
       <mat-form-field class="input-date">
         <mat-label>Data inizio</mat-label>
@@ -18,7 +18,7 @@
         <mat-datepicker-toggle matIconSuffix [for]="dataInizio"></mat-datepicker-toggle>
         <mat-datepicker #dataInizio></mat-datepicker>
       </mat-form-field>
-      
+
       <mat-form-field class="input-date">
         <mat-label>Data fine</mat-label>
         <input matInput [matDatepicker]="dataFine" formControlName="dataFine">
@@ -26,78 +26,97 @@
         <mat-datepicker #dataFine></mat-datepicker>
       </mat-form-field>
     </div>
-    
+
     <mat-form-field>
       <mat-label>Tipo attività</mat-label>
       <mat-select formControlName="tipoAttivita">
         @for (tipo of tipoAttivita; track tipo) {
-          <mat-option [value]="tipo">{{tipo}}</mat-option>
+        <mat-option [value]="tipo">{{tipo}}</mat-option>
         }
       </mat-select>
-  
+
       @if (form.get('tipoAttivita')?.hasError('required')) {
-        <mat-error>Il campo "tipo attività" è richiesto</mat-error>
+      <mat-error>{{ campoObbligatorio }}</mat-error>
       }
     </mat-form-field>
-    
+
     <mat-form-field>
       <mat-label>Attività</mat-label>
       <input matInput type="text" formControlName="attivita">
-  
+
       @if (form.get('attivita')?.hasError('required')) {
-        <mat-error>Il campo "attività" è richiesto</mat-error>
+      <mat-error>{{ campoObbligatorio }}</mat-error>
+      }
+      @if (form.get('attivita')?.hasError('maxlength')) {
+      <mat-error>Inserire massimo 100 caratteri</mat-error>
       }
     </mat-form-field>
-  
+
     <mat-form-field>
       <mat-label>Descrizione</mat-label>
       <textarea matInput type="text" formControlName="descrizione"></textarea>
-  
+
       @if (form.get('descrizione')?.hasError('required')) {
-        <mat-error>Il campo "descrizione" è richiesto</mat-error>
+      <mat-error>{{ campoObbligatorio }}</mat-error>
+      }
+      @if (form.get('descrizione')?.hasError('maxlength')) {
+      <mat-error>Inserire massimo 500 caratteri</mat-error>
       }
     </mat-form-field>
-  
+
     <mat-form-field>
       <mat-label>Persona di riferimento</mat-label>
       <input matInput type="text" matTooltip="Inserire il nome del referente del progetto o dell'attività"
         formControlName="personaRiferimento">
-  
-        @if (form.get('personaRiferimento')?.hasError('required')) {
-          <mat-error>Il campo "persona di riferimento" è richiesto</mat-error>
-        }
+
+      @if (form.get('personaRiferimento')?.hasError('required')) {
+      <mat-error>{{ campoObbligatorio }}</mat-error>
+      }
+      @if (form.get('personaRiferimento')?.hasError('maxlength')) {
+      <mat-error>Inserire massimo 50 caratteri</mat-error>
+      }
     </mat-form-field>
-  
+
     <mat-form-field>
       <mat-label>Cliente</mat-label>
       <input matInput type="text"
         matTooltip="Inserire il nome della società se l'attività riguarda una consulenza oppure 'Gruppo S.I.'' se riguarda un progetto interno."
         formControlName="cliente">
-  
-        @if (form.get('cliente')?.hasError('required')) {
-          <mat-error>Il campo "cliente" è richiesto</mat-error>
-        }
+
+      @if (form.get('cliente')?.hasError('required')) {
+      <mat-error>{{ campoObbligatorio }}</mat-error>
+      }
+      @if (form.get('cliente')?.hasError('maxlength')) {
+      <mat-error>Inserire massimo 100 caratteri</mat-error>
+      }
     </mat-form-field>
-  
+
     <mat-form-field>
       <mat-label>Colleghi Software Industriale</mat-label>
       <textarea matInput type="text"
         matTooltip="Inserire il cognome del collega o dei colleghi di Software Industriale con cui collabora per l'attività descritta"
         formControlName="colleghiSI"></textarea>
+
+      @if (form.get('colleghiSI')?.hasError('maxlength')) {
+      <mat-error>Inserire massimo 100 caratteri</mat-error>
+      }
     </mat-form-field>
-  
+
     <mat-form-field>
       <mat-label>Note</mat-label>
       <textarea matInput type="text"
         matTooltip="Inserire eventuali note aggiuntive che facciano riferimento all'attività descritta"
         formControlName="note"></textarea>
+      @if (form.get('note')?.hasError('maxlength')) {
+      <mat-error>Inserire massimo 500 caratteri</mat-error>
+      }
     </mat-form-field>
-  
+
     @if (submitButtonVisibility()) {
-      <div class="button-row">
-        <button mat-raised-button type="submit" [disabled]="!form.valid">Invia</button>
-      </div>
+    <div class="button-row">
+      <button mat-raised-button type="submit" [disabled]="!form.valid">Invia</button>
+    </div>
     }
-  
+
   </form>
 </app-card>

@@ -45,6 +45,8 @@ export class InserimentoResocontoComponent implements OnInit {
   message = signal('Inserisci di seguito il tuo resoconto settimanale:')
   submitButtonVisibility = signal(true);
 
+  campoObbligatorio = 'Il campo è obbligatorio';
+
   form!: FormGroup
   ultimoResoconto: Resoconto | null = null;
 
@@ -64,12 +66,12 @@ export class InserimentoResocontoComponent implements OnInit {
       dataInizio: [{ value: '', disabled: true }],
       dataFine: [{ value: '', disabled: true }],
       tipoAttivita: ['', Validators.required],
-      attivita: ['', Validators.required],
-      descrizione: ['', Validators.required],
-      personaRiferimento: ['', Validators.required],
-      cliente: ['', Validators.required],
-      colleghiSI: [''],
-      note: [''],
+      attivita: ['', [Validators.required, Validators.maxLength(100)]],
+      descrizione: ['', [Validators.required, Validators.maxLength(500)]],
+      personaRiferimento: ['', [Validators.required, Validators.maxLength(50)]],
+      cliente: ['', [Validators.required, Validators.maxLength(100)]],
+      colleghiSI: ['', Validators.maxLength(100)],
+      note: ['', Validators.maxLength(500)],
     });
 
     this.setWeekDates();
