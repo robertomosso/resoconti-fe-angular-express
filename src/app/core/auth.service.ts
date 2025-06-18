@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { SnackbarService } from '../shared/services/snackbar.service';
 import { LoginResponse } from '../shared/interfaces/login-response';
 import { UserModel } from '../shared/interfaces/user';
-import { environment } from '../../environments/environment.prod';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'

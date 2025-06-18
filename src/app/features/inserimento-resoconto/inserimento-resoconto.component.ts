@@ -33,22 +33,9 @@ import { AuthService } from '../../core/auth.service';
 })
 export class InserimentoResocontoComponent implements OnInit {
 
-  constructor(
-    private readonly authService: AuthService,
-    private readonly formBuilder: FormBuilder,
-    private readonly inserimentoResocontoService: InserimentoResocontoService,
-    private readonly snackbarService: SnackbarService,
-    private readonly errorHandlerService: ErrorHandlerService,
-  ) { }
-
   userName = signal('');
-  message = signal('Inserisci di seguito il tuo resoconto settimanale:')
+  message = signal('Inserisci di seguito il tuo resoconto settimanale:');
   submitButtonVisibility = signal(true);
-
-  campoObbligatorio = 'Il campo è obbligatorio';
-
-  form!: FormGroup
-  ultimoResoconto: Resoconto | null = null;
 
   tipoAttivita = [
     'Affiancamento',
@@ -59,6 +46,27 @@ export class InserimentoResocontoComponent implements OnInit {
     'Formazione',
   ];
 
+  form!: FormGroup;
+
+  ultimoResoconto: Resoconto | null = null;
+
+  campoObbligatorio = 'Il campo è obbligatorio';
+
+  attivitaMaxLength = 100;
+  descrizioneMaxLength = 500;
+  personaRiferimentoMaxLength = 100;
+  clienteMaxLength = 100;
+  colleghiSIMaxLength = 500;
+  noteMaxLength = 500;
+
+  constructor(
+    private readonly authService: AuthService,
+    private readonly formBuilder: FormBuilder,
+    private readonly inserimentoResocontoService: InserimentoResocontoService,
+    private readonly snackbarService: SnackbarService,
+    private readonly errorHandlerService: ErrorHandlerService,
+  ) { }
+
   ngOnInit(): void {
     this.userName.set(this.authService.user?.name ?? '');
 
@@ -66,16 +74,40 @@ export class InserimentoResocontoComponent implements OnInit {
       dataInizio: [{ value: '', disabled: true }],
       dataFine: [{ value: '', disabled: true }],
       tipoAttivita: ['', Validators.required],
-      attivita: ['', [Validators.required, Validators.maxLength(100)]],
-      descrizione: ['', [Validators.required, Validators.maxLength(500)]],
-      personaRiferimento: ['', [Validators.required, Validators.maxLength(50)]],
-      cliente: ['', [Validators.required, Validators.maxLength(100)]],
-      colleghiSI: ['', Validators.maxLength(100)],
-      note: ['', Validators.maxLength(500)],
+      attivita: ['', [Validators.required, Validators.maxLength(this.attivitaMaxLength)]],
+      descrizione: ['', [Validators.required, Validators.maxLength(this.descrizioneMaxLength)]],
+      personaRiferimento: ['', [Validators.required, Validators.maxLength(this.personaRiferimentoMaxLength)]],
+      cliente: ['', [Validators.required, Validators.maxLength(this.clienteMaxLength)]],
+      colleghiSI: ['', Validators.maxLength(this.colleghiSIMaxLength)],
+      note: ['', Validators.maxLength(this.noteMaxLength)],
     });
 
     this.setWeekDates();
     this.getUltimoResocontoByUser();
+  }
+
+  get attivita() {
+    return this.form.get('attivita');
+  }
+
+  get descrizione() {
+    return this.form.get('descrizione');
+  }
+
+  get personaRiferimento() {
+    return this.form.get('personaRiferimento');
+  }
+
+  get cliente() {
+    return this.form.get('cliente');
+  }
+
+  get colleghiSI() {
+    return this.form.get('colleghiSI');
+  }
+
+  get note() {
+    return this.form.get('note');
   }
 
   // funzione che setta e valorizza i campi dataInizio e dataFine con formato 'yyyy-mm-dd'

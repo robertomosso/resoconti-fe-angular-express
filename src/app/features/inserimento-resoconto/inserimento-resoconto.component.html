@@ -42,72 +42,97 @@
 
     <mat-form-field>
       <mat-label>Attività</mat-label>
-      <input matInput type="text" formControlName="attivita">
+      <input matInput type="text" [maxlength]="attivitaMaxLength" formControlName="attivita">
 
-      @if (form.get('attivita')?.hasError('required')) {
+      @if (attivita?.value) {
+      <mat-hint align="end">{{ attivita?.value?.length || 0 }} / {{ attivitaMaxLength }}</mat-hint>
+      }
+
+      @if (attivita?.hasError('required')) {
       <mat-error>{{ campoObbligatorio }}</mat-error>
       }
-      @if (form.get('attivita')?.hasError('maxlength')) {
-      <mat-error>Inserire massimo 100 caratteri</mat-error>
+      @if (attivita?.hasError('maxlength')) {
+      <mat-error>Inserire massimo {{ attivitaMaxLength }} caratteri</mat-error>
       }
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Descrizione</mat-label>
-      <textarea matInput type="text" formControlName="descrizione"></textarea>
+      <textarea matInput type="text" [maxlength]="descrizioneMaxLength" formControlName="descrizione"></textarea>
 
-      @if (form.get('descrizione')?.hasError('required')) {
+      @if (descrizione?.value) {
+      <mat-hint align="end">{{ descrizione?.value?.length || 0 }} / {{ descrizioneMaxLength }}</mat-hint>
+      }
+
+      @if (descrizione?.hasError('required')) {
       <mat-error>{{ campoObbligatorio }}</mat-error>
       }
-      @if (form.get('descrizione')?.hasError('maxlength')) {
+      @if (descrizione?.hasError('maxlength')) {
       <mat-error>Inserire massimo 500 caratteri</mat-error>
       }
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Persona di riferimento</mat-label>
-      <input matInput type="text" matTooltip="Inserire il nome del referente del progetto o dell'attività"
-        formControlName="personaRiferimento">
+      <input matInput type="text" [maxlength]="personaRiferimentoMaxLength"
+        matTooltip="Inserire il nome del referente del progetto o dell'attività" formControlName="personaRiferimento">
 
-      @if (form.get('personaRiferimento')?.hasError('required')) {
+      @if (personaRiferimento?.value) {
+      <mat-hint align="end">{{ personaRiferimento?.value?.length || 0 }} / {{ personaRiferimentoMaxLength }}</mat-hint>
+      }
+
+      @if (personaRiferimento?.hasError('required')) {
       <mat-error>{{ campoObbligatorio }}</mat-error>
       }
-      @if (form.get('personaRiferimento')?.hasError('maxlength')) {
-      <mat-error>Inserire massimo 50 caratteri</mat-error>
+      @if (personaRiferimento?.hasError('maxlength')) {
+      <mat-error>Inserire massimo 100 caratteri</mat-error>
       }
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Cliente</mat-label>
-      <input matInput type="text"
+      <input matInput type="text" [maxlength]="clienteMaxLength"
         matTooltip="Inserire il nome della società se l'attività riguarda una consulenza oppure 'Gruppo S.I.'' se riguarda un progetto interno."
         formControlName="cliente">
 
-      @if (form.get('cliente')?.hasError('required')) {
+      @if (cliente?.value) {
+      <mat-hint align="end">{{ cliente?.value?.length || 0 }} / {{ clienteMaxLength }}</mat-hint>
+      }
+
+      @if (cliente?.hasError('required')) {
       <mat-error>{{ campoObbligatorio }}</mat-error>
       }
-      @if (form.get('cliente')?.hasError('maxlength')) {
+      @if (cliente?.hasError('maxlength')) {
       <mat-error>Inserire massimo 100 caratteri</mat-error>
       }
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Colleghi Software Industriale</mat-label>
-      <textarea matInput type="text"
+      <textarea matInput type="text" [maxlength]="colleghiSIMaxLength"
         matTooltip="Inserire il cognome del collega o dei colleghi di Software Industriale con cui collabora per l'attività descritta"
         formControlName="colleghiSI"></textarea>
 
-      @if (form.get('colleghiSI')?.hasError('maxlength')) {
-      <mat-error>Inserire massimo 100 caratteri</mat-error>
+      @if (colleghiSI?.value) {
+      <mat-hint align="end">{{ colleghiSI?.value?.length || 0 }} / {{ colleghiSIMaxLength }}</mat-hint>
+      }
+
+      @if (colleghiSI?.hasError('maxlength')) {
+      <mat-error>Inserire massimo 500 caratteri</mat-error>
       }
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>Note</mat-label>
-      <textarea matInput type="text"
+      <textarea matInput type="text" [maxlength]="noteMaxLength"
         matTooltip="Inserire eventuali note aggiuntive che facciano riferimento all'attività descritta"
         formControlName="note"></textarea>
-      @if (form.get('note')?.hasError('maxlength')) {
+
+      @if (note?.value) {
+      <mat-hint align="end">{{ note?.value?.length || 0 }} / {{ noteMaxLength }}</mat-hint>
+      }
+
+      @if (note?.hasError('maxlength')) {
       <mat-error>Inserire massimo 500 caratteri</mat-error>
       }
     </mat-form-field>

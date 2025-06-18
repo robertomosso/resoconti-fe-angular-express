@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatButton } from '@angular/material/button';
+import { MatButtonModule, MatButton } from '@angular/material/button';
 import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
 
 import { AuthService } from '../../core/auth.service';
 import { CardComponent } from '../../shared/components/card/card.component';
@@ -19,6 +20,8 @@ import { ErrorHandlerService } from '../../shared/services/error-handler.service
     MatLabel,
     MatInputModule,
     MatError,
+    MatButtonModule,
+    MatIconModule,
     MatButton,
   ],
   templateUrl: './login.component.html',
@@ -26,8 +29,10 @@ import { ErrorHandlerService } from '../../shared/services/error-handler.service
 })
 export class LoginComponent implements OnInit {
 
-  form!: FormGroup;
+  hidePassword = true;
 
+  form!: FormGroup;
+  
   constructor(
     private readonly fb: FormBuilder,
     private readonly authService: AuthService,
@@ -41,6 +46,14 @@ export class LoginComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(16)]],
     })
+  }
+
+  get email() {
+    return this.form.get('email');
+  }
+
+  get password() {
+    return this.form.get('password');
   }
 
   onSubmit() {
