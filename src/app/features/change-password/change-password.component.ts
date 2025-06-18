@@ -38,7 +38,7 @@ export class ChangePasswordComponent {
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
+      email: [this.authService.user?.email || '', [Validators.required, Validators.email]],
       currentPassword: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(16)]],
       newPassword: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(16)]],
     })
