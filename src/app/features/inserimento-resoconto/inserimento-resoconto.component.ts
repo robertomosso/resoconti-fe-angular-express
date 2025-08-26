@@ -36,6 +36,7 @@ export class InserimentoResocontoComponent implements OnInit {
   userName = signal('');
   message = signal('Inserisci di seguito il tuo resoconto settimanale:');
   submitButtonVisibility = signal(true);
+  endDateLastResoconto = '';
 
   tipoAttivita = [
     'Affiancamento',
@@ -44,6 +45,7 @@ export class InserimentoResocontoComponent implements OnInit {
     'Documentazione',
     'Risoluzione ticket',
     'Formazione',
+    'Altro',
   ];
 
   form!: FormGroup;
@@ -71,8 +73,8 @@ export class InserimentoResocontoComponent implements OnInit {
     this.userName.set(this.authService.user?.name ?? '');
 
     this.form = this.formBuilder.group({
-      dataInizio: [{ value: '', disabled: true }],
-      dataFine: [{ value: '', disabled: true }],
+      dataInizio: [''],
+      dataFine: [''],
       tipoAttivita: ['', Validators.required],
       attivita: ['', [Validators.required, Validators.maxLength(this.attivitaMaxLength)]],
       descrizione: ['', [Validators.required, Validators.maxLength(this.descrizioneMaxLength)]],
@@ -135,6 +137,12 @@ export class InserimentoResocontoComponent implements OnInit {
 
           // se c'è ultimoResoconto il form viene prevalorizzato con i suoi valori
           if (this.ultimoResoconto) {
+
+            // limitazione della selezione di date nel datepicker in base all'ultimo resoconto inserito 
+            const date = new Date(this.ultimoResoconto.dataFine);
+            date.setDate(date.getDate() + 3);
+            this.endDateLastResoconto = formatDateToUsDate(date);
+
             this.form.patchValue({
               tipoAttivita: this.ultimoResoconto.tipoAttivita,
               attivita: this.ultimoResoconto.attivita,
@@ -169,9 +177,12 @@ export class InserimentoResocontoComponent implements OnInit {
 
   onSubmit() {
     if (this.form.valid) {
+      const dataInizio = new Date(this.form.get('dataInizio')?.value);
+      const dataFine = new Date(this.form.get('dataFine')?.value);
+
       const body: Partial<Resoconto> = {
-        dataInizio: this.form.get('dataInizio')?.value,
-        dataFine: this.form.get('dataFine')?.value,
+        dataInizio: formatDateToUsDate(dataInizio),
+        dataFine: formatDateToUsDate(dataFine),
         tipoAttivita: this.form.get('tipoAttivita')?.value?.trim(),
         attivita: this.form.get('attivita')?.value?.trim(),
         descrizione: this.form.get('descrizione')?.value?.trim(),
@@ -192,7 +203,8 @@ export class InserimentoResocontoComponent implements OnInit {
     this.inserimentoResocontoService.inserisciResoconto(body)
       .subscribe({
         next: () => {
-          this.resocontoGiaInserito();
+          this.setWeekDates();
+          this.getUltimoResocontoByUser();
           this.snackbarService.openSnackbar('Inserimento avvenuto con successo!');
         },
         error: (err) => {
@@ -204,7 +216,7 @@ export class InserimentoResocontoComponent implements OnInit {
   private resocontoGiaInserito(): void {
     this.submitButtonVisibility.set(false);
     this.form.disable();
-    this.message.set('Resoconto già inserito per questa settimana');
+    this.message.set('Resoconto già inserito per la settimana corrente');
   }
 
   logout() {

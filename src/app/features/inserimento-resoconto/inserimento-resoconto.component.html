@@ -10,18 +10,18 @@
   </div>
 
   <form class="form-container" [formGroup]="form" (ngSubmit)="onSubmit()">
-
+    
     <div class="date-container">
       <mat-form-field class="input-date">
         <mat-label>Data inizio</mat-label>
-        <input matInput [matDatepicker]="dataInizio" formControlName="dataInizio">
+        <input matInput [matDatepicker]="dataInizio" formControlName="dataInizio" [min]="endDateLastResoconto">
         <mat-datepicker-toggle matIconSuffix [for]="dataInizio"></mat-datepicker-toggle>
         <mat-datepicker #dataInizio></mat-datepicker>
       </mat-form-field>
 
       <mat-form-field class="input-date">
         <mat-label>Data fine</mat-label>
-        <input matInput [matDatepicker]="dataFine" formControlName="dataFine">
+        <input matInput [matDatepicker]="dataFine" formControlName="dataFine" [min]="endDateLastResoconto">
         <mat-datepicker-toggle matIconSuffix [for]="dataFine"></mat-datepicker-toggle>
         <mat-datepicker #dataFine></mat-datepicker>
       </mat-form-field>
