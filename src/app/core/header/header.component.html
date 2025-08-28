@@ -1,0 +1,22 @@
+<header>
+	<h1>Gestione Resoconti</h1>
+
+	<div class="nav-logout">
+		@if (authService.user) {
+			@if (authService.user.role && [Role.Superuser, Role.Admin].includes(authService.user.role)) {
+			<nav>
+				<li>
+					<a mat-button routerLink="/register">Registra nuovo utente</a>
+				</li>
+				<li>
+					<a mat-button routerLink="/visualizza-resoconti">Visualizza Resoconti</a>
+				</li>
+				<li>
+					<a mat-button routerLink="/inserimento-resoconto">Inserisci Resoconto</a>
+				</li>
+			</nav>
+			}
+		<button class="logout-button" mat-button (click)="logout()">Logout</button>
+		}
+	</div>
+</header>

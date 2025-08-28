@@ -4,22 +4,6 @@
   height: 100vh;
 }
 
-header {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  background-color: rgb(217, 236, 255);
-  box-shadow: 0 3px 8px -3px rgba(0, 0, 0, 0.4);
-  height: 4rem;
-}
-
-h1 {
-  padding: 1.5rem;
-  font-size: 1.5rem;
-  font-weight: 500;
-}
-
 .spinner {
   position: fixed;
   width: 100%;
@@ -34,7 +18,7 @@ h1 {
 main {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  /* justify-content: center; */
   align-items: center;
   flex: 1;
   padding-bottom: 5rem;

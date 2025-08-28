@@ -1,3 +1,5 @@
+import { Role } from "./role.enum"
+
 export interface UserModel {
     id: string,
     name: string
@@ -5,4 +7,5 @@ export interface UserModel {
     password: string,
     mustChangePassword: boolean,
     fileId: string,
+    role: Role
 }

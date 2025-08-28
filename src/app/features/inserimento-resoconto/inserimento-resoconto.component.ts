@@ -11,7 +11,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { formatDateToUsDate } from '../../shared/utils/date-formatter';
 import { CardComponent } from '../../shared/components/card/card.component';
 import { InserimentoResocontoService } from './inserimento-resoconto.service';
-import { Resoconto } from '../../shared/interfaces/resoconto';
+import { Resoconto } from '../../shared/interfaces/resoconto.interface';
 import { SnackbarService } from '../../shared/services/snackbar.service';
 import { ErrorHandlerService } from '../../shared/services/error-handler.service';
 import { AuthService } from '../../core/auth.service';
@@ -217,10 +217,6 @@ export class InserimentoResocontoComponent implements OnInit {
     this.submitButtonVisibility.set(false);
     this.form.disable();
     this.message.set('Resoconto già inserito per la settimana corrente');
-  }
-
-  logout() {
-    this.authService.logout();
   }
 
 }

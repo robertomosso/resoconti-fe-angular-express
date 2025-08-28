@@ -1,19 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule, MatButton } from '@angular/material/button';
-import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
+import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 
-import { AuthService } from '../../core/auth.service';
 import { CardComponent } from '../../shared/components/card/card.component';
-import { SnackbarService } from '../../shared/services/snackbar.service';
+import { Router } from '@angular/router';
+import { AuthService } from '../../core/auth.service';
 import { ErrorHandlerService } from '../../shared/services/error-handler.service';
-import { Role } from '../../shared/interfaces/role.enum';
+import { SnackbarService } from '../../shared/services/snackbar.service';
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-register',
   imports: [
     CardComponent,
     ReactiveFormsModule,
@@ -25,15 +24,15 @@ import { Role } from '../../shared/interfaces/role.enum';
     MatIconModule,
     MatButton,
   ],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  templateUrl: './register-superuser.component.html',
+  styleUrl: './register-superuser.component.css'
 })
-export class LoginComponent implements OnInit {
+export class RegisterSuperuserComponent implements OnInit {
 
   hidePassword = true;
 
   form!: FormGroup;
-  
+
   constructor(
     private readonly fb: FormBuilder,
     private readonly authService: AuthService,
@@ -44,9 +43,15 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = this.fb.group({
+      name: ['', [Validators.required, Validators.minLength(8)]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(16)]],
+      fileId: [''],
     })
+  }
+
+  get name() {
+    return this.form.get('name');
   }
 
   get email() {
@@ -58,27 +63,14 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
-    const { email, password } = this.form.getRawValue();
+    const { name, email, password, fileId } = this.form.getRawValue();
 
-    if (email && password) {
-      this.authService.login(email, password)
+    if (name && email && password) {
+      this.authService.registerSuperuser(name, email, password, fileId)
         .subscribe({
           next: (res) => {
             this.snackbarService.openSnackbar(res.message, 3000);
-
-            this.authService.token = res.token;
-            this.authService.user = res.user;
-
-            if (this.authService.user?.mustChangePassword) {
-              this.router.navigate(['change-password']);
-            } else {
-              // in base a ruolo cambiare navigate, role user va su inserimento-resoconto, altrimenti su visualizzazione-resoconti
-              if (this.authService.user?.role && [Role.Superuser, Role.Admin].includes(this.authService.user?.role)) {
-                this.router.navigate(['visualizza-resoconti']); 
-              } else {
-                this.router.navigate(['inserimento-resoconto']);
-              }
-            }
+            this.router.navigate(['login']);
           },
           error: (err) => {
             this.errorHandlerService.handleErrors(err);
@@ -88,4 +80,5 @@ export class LoginComponent implements OnInit {
       this.snackbarService.openSnackbar('Credenziali non valide');
     }
   }
+
 }

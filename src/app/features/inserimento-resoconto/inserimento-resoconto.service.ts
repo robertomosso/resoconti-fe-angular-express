@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { Resoconto } from '../../shared/interfaces/resoconto';
+import { Resoconto } from '../../shared/interfaces/resoconto.interface';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -16,10 +16,10 @@ export class InserimentoResocontoService {
   constructor(private readonly httpClient: HttpClient) { }
 
   getUltimoResocontoByUser(): Observable<Resoconto> {
-    return this.httpClient.get<Resoconto>(`${environment.baseUrl}/resoconto`);
+    return this.httpClient.get<Resoconto>(`${environment.baseUrl}/resoconto/ultimo-resoconto`);
   }
   
   inserisciResoconto(body: Partial<Resoconto>): Observable<any> {
-    return this.httpClient.post<Resoconto>(`${environment.baseUrl}/resoconto`, body);
+    return this.httpClient.post<Resoconto>(`${environment.baseUrl}/resoconto/inserisciResoconto`, body);
   }
 }

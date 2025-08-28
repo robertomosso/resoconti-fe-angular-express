@@ -1,23 +1,9 @@
-:host {
-  width: 45rem;
-}
-
 .header {
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-.logout-row {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: end;
-}
-
-.logout-button {
-  margin-right: 1rem;
+  padding-top: 1rem;
 }
 
 h1 {
@@ -35,7 +21,7 @@ h1 {
 }
 
 mat-form-field {
-  width: 80%;
+  width: 100%;
   margin: auto;
   margin-top: 2rem;
 }
@@ -43,7 +29,7 @@ mat-form-field {
 .date-container {
   display: flex;
   justify-content: space-between;
-  width: 80%;
+  width: 100%;
   margin: auto;
 }
 

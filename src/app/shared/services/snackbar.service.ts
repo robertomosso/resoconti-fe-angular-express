@@ -12,7 +12,7 @@ export class SnackbarService {
     this.snackBar.open(message, 'Chiudi', {
       duration,
       horizontalPosition: 'end',
-      verticalPosition: 'top'
+      verticalPosition: 'bottom'
     });
   }
 }

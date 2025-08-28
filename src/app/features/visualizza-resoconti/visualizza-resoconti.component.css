@@ -1,0 +1,17 @@
+.container {
+    margin-top: 3rem;
+    width: 80vw;
+}
+
+table {
+    width: 100%;
+}
+
+.mat-column-dataInizio, 
+.mat-column-dataFine {
+    width: 7%;
+}
+
+.mat-column-tipoAttivita {
+    width: 10%;
+}

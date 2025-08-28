@@ -3,10 +3,13 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
-import { SnackbarService } from '../shared/services/snackbar.service';
-import { LoginResponse } from '../shared/interfaces/login-response';
-import { UserModel } from '../shared/interfaces/user';
 import { environment } from '../../environments/environment';
+import { SnackbarService } from '../shared/services/snackbar.service';
+import { LoginResponse } from '../shared/interfaces/login-response.interface';
+import { UserModel } from '../shared/interfaces/user.interface';
+import { HasUserResponse } from '../shared/interfaces/has-user-response.interface';
+import { RegisterResponse } from '../shared/interfaces/register-response.interface';
+import { Role } from '../shared/interfaces/role.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +24,27 @@ export class AuthService {
     private readonly snackbarService: SnackbarService,
     private readonly router: Router,
   ) { }
+
+  registerSuperuser(name: string, email: string, password: string, fileId = null): Observable<RegisterResponse> {
+    return this.httpClient.post<RegisterResponse>(`${environment.baseUrl}/auth/register-superuser`, {
+      name,
+      email,
+      password,
+      fileId
+    });
+  }
+
+  register(name: string, email: string, password: string, role = Role.User, fileId = null): Observable<RegisterResponse> {
+    const endpoint = role === Role.Admin ? 'register-admin' : 'register-user';
+
+    return this.httpClient.post<RegisterResponse>(`${environment.baseUrl}/auth/${endpoint}`, {
+      name,
+      email,
+      password,
+      role,
+      fileId
+    });
+  }
 
   login(email: string, password: string): Observable<LoginResponse> {
     return this.httpClient.post<LoginResponse>(`${environment.baseUrl}/auth/login`, {
@@ -39,6 +63,7 @@ export class AuthService {
 
   logout() {
     this.token = null;
+    this.user = null;
     this.router.navigate(['login']);
     this.snackbarService.openSnackbar('Logout avvenuto con successo!');
   }
