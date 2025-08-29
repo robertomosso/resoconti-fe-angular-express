@@ -6,11 +6,12 @@ import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 
-import { AuthService } from '../../core/auth.service';
+
 import { CardComponent } from '../../shared/components/card/card.component';
 import { SnackbarService } from '../../shared/services/snackbar.service';
 import { ErrorHandlerService } from '../../shared/services/error-handler.service';
 import { Role } from '../../shared/interfaces/role.enum';
+import { AuthService } from '../../shared/services/auth.service';
 
 @Component({
   selector: 'app-login',

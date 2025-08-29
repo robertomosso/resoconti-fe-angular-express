@@ -7,11 +7,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 
-import { AuthService } from '../../core/auth.service';
 import { ErrorHandlerService } from '../../shared/services/error-handler.service';
 import { SnackbarService } from '../../shared/services/snackbar.service';
 import { CardComponent } from '../../shared/components/card/card.component';
 import { Role } from '../../shared/interfaces/role.enum';
+import { AuthService } from '../../shared/services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -65,7 +65,7 @@ export class RegisterComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(16)]],
       role: ['', Validators.required], // mostrare solo se ruolo utente è superuser
-      fileId: [''], // mostrare solo se si registra utente con ruolo user
+      fileId: [''],
     })
 
     this.authService.user?.role === Role.Admin

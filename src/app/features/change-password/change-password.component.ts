@@ -7,9 +7,9 @@ import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 
 import { CardComponent } from '../../shared/components/card/card.component';
-import { AuthService } from '../../core/auth.service';
 import { SnackbarService } from '../../shared/services/snackbar.service';
 import { ErrorHandlerService } from '../../shared/services/error-handler.service';
+import { AuthService } from '../../shared/services/auth.service';
 
 @Component({
   selector: 'app-change-password',

@@ -10,11 +10,11 @@ import { HttpErrorResponse } from '@angular/common/http';
 
 import { formatDateToUsDate } from '../../shared/utils/date-formatter';
 import { CardComponent } from '../../shared/components/card/card.component';
-import { InserimentoResocontoService } from './inserimento-resoconto.service';
 import { Resoconto } from '../../shared/interfaces/resoconto.interface';
 import { SnackbarService } from '../../shared/services/snackbar.service';
 import { ErrorHandlerService } from '../../shared/services/error-handler.service';
-import { AuthService } from '../../core/auth.service';
+import { AuthService } from '../../shared/services/auth.service';
+import { ResocontoService } from '../../shared/services/resoconto.service';
 
 @Component({
   selector: 'app-inserimento-resoconto',
@@ -64,7 +64,7 @@ export class InserimentoResocontoComponent implements OnInit {
   constructor(
     private readonly authService: AuthService,
     private readonly formBuilder: FormBuilder,
-    private readonly inserimentoResocontoService: InserimentoResocontoService,
+    private readonly resocontoService: ResocontoService,
     private readonly snackbarService: SnackbarService,
     private readonly errorHandlerService: ErrorHandlerService,
   ) { }
@@ -130,7 +130,7 @@ export class InserimentoResocontoComponent implements OnInit {
   }
 
   getUltimoResocontoByUser() {
-    this.inserimentoResocontoService.getUltimoResocontoByUser()
+    this.resocontoService.getUltimoResocontoByUser()
       .subscribe({
         next: (res) => {
           this.ultimoResoconto = res;
@@ -200,7 +200,7 @@ export class InserimentoResocontoComponent implements OnInit {
   }
 
   inserisciResoconto(body: Partial<Resoconto>) {
-    this.inserimentoResocontoService.inserisciResoconto(body)
+    this.resocontoService.inserisciResoconto(body)
       .subscribe({
         next: () => {
           this.setWeekDates();

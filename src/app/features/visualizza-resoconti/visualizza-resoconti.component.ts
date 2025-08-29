@@ -6,16 +6,13 @@ import { AsyncPipe } from '@angular/common';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { map, Observable, startWith } from 'rxjs';
-import { VisualizzaResocontiService } from './visualizza-resoconti.service';
+
 import { ErrorHandlerService } from '../../shared/services/error-handler.service';
 import { Resoconto } from '../../shared/interfaces/resoconto.interface';
 import { UserService } from '../../shared/services/user.service';
 import { UserModel } from '../../shared/interfaces/user.interface';
+import { ResocontoService } from '../../shared/services/resoconto.service';
 
-// interface User {
-//   id: string,
-//   name: string,
-// }
 
 @Component({
   selector: 'app-visualizza-resoconti',
@@ -58,7 +55,7 @@ export class VisualizzaResocontiComponent implements OnInit {
 
   constructor(
     private readonly usersService: UserService,
-    private readonly visualizzaResocontiService: VisualizzaResocontiService,
+    private readonly resocontoService: ResocontoService,
     private readonly errorHandlerService: ErrorHandlerService,
   ) { }
 
@@ -91,7 +88,7 @@ export class VisualizzaResocontiComponent implements OnInit {
   loadResocontiUser(event: MatAutocompleteSelectedEvent) {
     const userId = event.option.value?.id;
 
-    this.visualizzaResocontiService.getResocontiUtente(userId).subscribe({
+    this.resocontoService.getResocontiUtente(userId).subscribe({
       next: (res) => {
         this.dataSource = res.resoconti;
       },

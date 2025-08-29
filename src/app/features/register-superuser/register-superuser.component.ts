@@ -7,9 +7,9 @@ import { MatInputModule } from '@angular/material/input';
 
 import { CardComponent } from '../../shared/components/card/card.component';
 import { Router } from '@angular/router';
-import { AuthService } from '../../core/auth.service';
 import { ErrorHandlerService } from '../../shared/services/error-handler.service';
 import { SnackbarService } from '../../shared/services/snackbar.service';
+import { AuthService } from '../../shared/services/auth.service';
 
 @Component({
   selector: 'app-register',

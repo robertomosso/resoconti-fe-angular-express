@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 
-import { AuthService } from '../auth.service';
+
 import { RouterLink } from '@angular/router';
 import { Role } from '../../shared/interfaces/role.enum';
+import { AuthService } from '../../shared/services/auth.service';
 
 @Component({
   selector: 'app-header',

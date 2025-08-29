@@ -3,13 +3,12 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
-import { environment } from '../../environments/environment';
-import { SnackbarService } from '../shared/services/snackbar.service';
-import { LoginResponse } from '../shared/interfaces/login-response.interface';
-import { UserModel } from '../shared/interfaces/user.interface';
-import { HasUserResponse } from '../shared/interfaces/has-user-response.interface';
-import { RegisterResponse } from '../shared/interfaces/register-response.interface';
-import { Role } from '../shared/interfaces/role.enum';
+import { environment } from '../../../environments/environment';
+import { UserModel } from '../interfaces/user.interface';
+import { LoginResponse } from '../interfaces/login-response.interface';
+import { RegisterResponse } from '../interfaces/register-response.interface';
+import { Role } from '../interfaces/role.enum';
+import { SnackbarService } from './snackbar.service';
 
 @Injectable({
   providedIn: 'root'
@@ -67,5 +66,4 @@ export class AuthService {
     this.router.navigate(['login']);
     this.snackbarService.openSnackbar('Logout avvenuto con successo!');
   }
-  
 }
