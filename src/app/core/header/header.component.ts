@@ -3,7 +3,7 @@ import { MatButtonModule } from '@angular/material/button';
 
 
 import { RouterLink } from '@angular/router';
-import { Role } from '../../shared/interfaces/role.enum';
+import { Role } from '../../shared/enums/role.enum';
 import { AuthService } from '../../shared/services/auth.service';
 
 @Component({

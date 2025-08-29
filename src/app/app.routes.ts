@@ -1,18 +1,15 @@
 import { Routes } from '@angular/router';
 
-import { HomeComponent } from './features/home/home.component';
 import { LoginComponent } from './features/login/login.component';
-import { startupRedirectGuard } from './shared/guards/startup-redirect.guard';
-import { registerSuperuserGuard } from './shared/guards/register-superuser.guard';
 import { loginGuard } from './shared/guards/login.guard';
 import { authGuard } from './shared/guards/auth.guard';
-import { onlySuperuserAdminGuard } from './shared/guards/only-superuser-admin.guard';
+import { onlyAdminGuard } from './shared/guards/only-admin.guard';
 
 export const routes: Routes = [
     {
-        path: '',
-        component: HomeComponent,
-        canActivate: [startupRedirectGuard]
+         path: '', 
+         pathMatch: 'full', 
+         redirectTo: 'login'
     },
     {
         // raggiungibile solo se user table con almeno uno user
@@ -21,16 +18,10 @@ export const routes: Routes = [
         canActivate: [loginGuard]
     },
     {
-        // raggiungibile solo se user table vuota
-        path: 'register-superuser',
-        loadComponent: () => import('./features/register-superuser/register-superuser.component').then(m => m.RegisterSuperuserComponent),
-        canActivate: [registerSuperuserGuard]
-    },
-    {
-        // raggiungibile solo da user con ruolo superuser/admin
+        // raggiungibile solo da user con ruolo admin oppure se la table user è ancora vuota (per registrare primo utente admin)
         path: 'register',
         loadComponent: () => import('./features/register/register.component').then(m => m.RegisterComponent),
-        canActivate: [onlySuperuserAdminGuard]
+        canActivate: [onlyAdminGuard]
     },
     {
         path: 'change-password',
@@ -45,6 +36,6 @@ export const routes: Routes = [
     {
         path: 'visualizza-resoconti',
         loadComponent: () => import('./features/visualizza-resoconti/visualizza-resoconti.component').then(m => m.VisualizzaResocontiComponent),
-        canActivate: [authGuard, onlySuperuserAdminGuard]
+        canActivate: [authGuard, onlyAdminGuard]
     },
 ];

@@ -1,17 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { AsyncPipe } from '@angular/common';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { map, Observable, startWith } from 'rxjs';
+import { map, Observable, startWith, tap } from 'rxjs';
 
 import { ErrorHandlerService } from '../../shared/services/error-handler.service';
 import { Resoconto } from '../../shared/interfaces/resoconto.interface';
 import { UserService } from '../../shared/services/user.service';
 import { UserModel } from '../../shared/interfaces/user.interface';
 import { ResocontoService } from '../../shared/services/resoconto.service';
+import { DateFormatterPipe } from '../../shared/pipes/date-formatter.pipe';
 
 
 @Component({
@@ -22,8 +24,10 @@ import { ResocontoService } from '../../shared/services/resoconto.service';
     ReactiveFormsModule,
     MatInputModule,
     MatAutocompleteModule,
+    MatSelectModule,
     MatTableModule,
     AsyncPipe,
+    DateFormatterPipe,
   ],
   templateUrl: './visualizza-resoconti.component.html',
   styleUrl: './visualizza-resoconti.component.css'
@@ -31,7 +35,9 @@ import { ResocontoService } from '../../shared/services/resoconto.service';
 export class VisualizzaResocontiComponent implements OnInit {
 
   users = new FormControl('');
+  // anno = new FormControl('');
 
+  // listaAnni = ['2024', '2025'];
   listaUtenti: Partial<UserModel[]> = [];
   filteredListaUtenti: Observable<Partial<UserModel[]>> | undefined;
 
@@ -65,6 +71,10 @@ export class VisualizzaResocontiComponent implements OnInit {
         this.listaUtenti = res.users;
         this.filteredListaUtenti = this.users.valueChanges.pipe(
           startWith(''),
+          // tap(value => {
+          //   this.anno.reset();
+          //   value ? this.anno.enable() : this.anno.disable();
+          // }),
           map(value => this._filter(value || '')),
         );
       },

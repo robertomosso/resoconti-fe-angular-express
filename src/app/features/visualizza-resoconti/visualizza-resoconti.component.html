@@ -3,7 +3,7 @@
     <form>
         <mat-form-field>
             <mat-label>Filtra per utente</mat-label>
-            <input type="text" matInput [formControl]="users" [matAutocomplete]="auto">
+            <input type="text" matInput [formControl]="users" [matAutocomplete]="auto" (click)="users.reset()">
             <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayUserName"
                 (optionSelected)="loadResocontiUser($event)">
                 @for (user of filteredListaUtenti | async; track user) {
@@ -11,61 +11,72 @@
                 }
             </mat-autocomplete>
         </mat-form-field>
+
+        <!-- <mat-form-field>
+            <mat-label>Filtra per anno</mat-label>
+            <mat-select [formControl]="anno">
+                @for (anno of listaAnni; track anno) {
+                <mat-option [value]="anno">{{anno}}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field> -->
     </form>
 
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-        <ng-container matColumnDef="dataInizio">
-            <th mat-header-cell *matHeaderCellDef>Data Inizio</th>
-            <td mat-cell *matCellDef="let element"> {{element.dataInizio}} </td>
-        </ng-container>
+    <div class="table-container">
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+            <ng-container matColumnDef="dataInizio">
+                <th mat-header-cell *matHeaderCellDef>Data Inizio</th>
+                <td mat-cell *matCellDef="let element"> {{element.dataInizio | dateFormatter}} </td>
+            </ng-container>
 
-        <ng-container matColumnDef="dataFine">
-            <th mat-header-cell *matHeaderCellDef>Data Fine</th>
-            <td mat-cell *matCellDef="let element"> {{element.dataFine}} </td>
-        </ng-container>
+            <ng-container matColumnDef="dataFine">
+                <th mat-header-cell *matHeaderCellDef>Data Fine</th>
+                <td mat-cell *matCellDef="let element"> {{element.dataFine | dateFormatter}} </td>
+            </ng-container>
 
-        <ng-container matColumnDef="tipoAttivita">
-            <th mat-header-cell *matHeaderCellDef>Tipo Attivita</th>
-            <td mat-cell *matCellDef="let element"> {{element.tipoAttivita}} </td>
-        </ng-container>
+            <ng-container matColumnDef="tipoAttivita">
+                <th mat-header-cell *matHeaderCellDef>Tipo Attivita</th>
+                <td mat-cell *matCellDef="let element"> {{element.tipoAttivita}} </td>
+            </ng-container>
 
-        <ng-container matColumnDef="attivita">
-            <th mat-header-cell *matHeaderCellDef>Attività</th>
-            <td mat-cell *matCellDef="let element"> {{element.attivita}} </td>
-        </ng-container>
+            <ng-container matColumnDef="attivita">
+                <th mat-header-cell *matHeaderCellDef>Attività</th>
+                <td mat-cell *matCellDef="let element"> {{element.attivita}} </td>
+            </ng-container>
 
-        <ng-container matColumnDef="descrizione">
-            <th mat-header-cell *matHeaderCellDef>Descrizione</th>
-            <td mat-cell *matCellDef="let element"> {{element.descrizione}} </td>
-        </ng-container>
+            <ng-container matColumnDef="descrizione">
+                <th mat-header-cell *matHeaderCellDef>Descrizione</th>
+                <td mat-cell *matCellDef="let element"> {{element.descrizione}} </td>
+            </ng-container>
 
-        <ng-container matColumnDef="personaRiferimento">
-            <th mat-header-cell *matHeaderCellDef>Persona Riferimento</th>
-            <td mat-cell *matCellDef="let element"> {{element.personaRiferimento}} </td>
-        </ng-container>
+            <ng-container matColumnDef="personaRiferimento">
+                <th mat-header-cell *matHeaderCellDef>Persona Riferimento</th>
+                <td mat-cell *matCellDef="let element"> {{element.personaRiferimento}} </td>
+            </ng-container>
 
-        <ng-container matColumnDef="cliente">
-            <th mat-header-cell *matHeaderCellDef>Cliente</th>
-            <td mat-cell *matCellDef="let element"> {{element.cliente}} </td>
-        </ng-container>
+            <ng-container matColumnDef="cliente">
+                <th mat-header-cell *matHeaderCellDef>Cliente</th>
+                <td mat-cell *matCellDef="let element"> {{element.cliente}} </td>
+            </ng-container>
 
-        <ng-container matColumnDef="colleghiSI">
-            <th mat-header-cell *matHeaderCellDef>Colleghi SI</th>
-            <td mat-cell *matCellDef="let element"> {{element.colleghiSI}} </td>
-        </ng-container>
+            <ng-container matColumnDef="colleghiSI">
+                <th mat-header-cell *matHeaderCellDef>Colleghi SI</th>
+                <td mat-cell *matCellDef="let element"> {{element.colleghiSI}} </td>
+            </ng-container>
 
-        <ng-container matColumnDef="note">
-            <th mat-header-cell *matHeaderCellDef>Note</th>
-            <td mat-cell *matCellDef="let element"> {{element.note}} </td>
-        </ng-container>
+            <ng-container matColumnDef="note">
+                <th mat-header-cell *matHeaderCellDef>Note</th>
+                <td mat-cell *matCellDef="let element"> {{element.note}} </td>
+            </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
-        <tr class="mat-row" *matNoDataRow>
-            <td class="mat-cell" [attr.colspan]="displayedColumns.length">
-                Nessun resoconto per l'utente selezionato.
-            </td>
-        </tr>
-    </table>
+            <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+                    Nessun resoconto per l'utente selezionato.
+                </td>
+            </tr>
+        </table>
+    </div>
 </div>

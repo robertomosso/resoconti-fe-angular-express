@@ -10,8 +10,9 @@ import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { ErrorHandlerService } from '../../shared/services/error-handler.service';
 import { SnackbarService } from '../../shared/services/snackbar.service';
 import { CardComponent } from '../../shared/components/card/card.component';
-import { Role } from '../../shared/interfaces/role.enum';
+import { Role } from '../../shared/enums/role.enum';
 import { AuthService } from '../../shared/services/auth.service';
+import { UserService } from '../../shared/services/user.service';
 
 @Component({
   selector: 'app-register',
@@ -53,6 +54,7 @@ export class RegisterComponent implements OnInit {
 
   constructor(
     public authService: AuthService,
+    public userService: UserService,
     private readonly fb: FormBuilder,
     private readonly snackbarService: SnackbarService,
     private readonly router: Router,
@@ -64,11 +66,13 @@ export class RegisterComponent implements OnInit {
       name: ['', [Validators.required, Validators.minLength(8)]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(16)]],
-      role: ['', Validators.required], // mostrare solo se ruolo utente è superuser
+      role: ['', Validators.required],
       fileId: [''],
     })
 
-    this.authService.user?.role === Role.Admin
+    if (!this.userService.databaseHasUser()) {
+      this.form.patchValue({ role: Role.Admin });
+    }
   }
 
   get name() {
@@ -92,7 +96,6 @@ export class RegisterComponent implements OnInit {
   }
 
   onRoleChange(event: MatSelectChange) {
-    console.log(event);
     if (event.value === Role.User) {
       this.fileId?.setValidators(Validators.required);
       this.fileIdRequired.set(true);
@@ -111,8 +114,8 @@ export class RegisterComponent implements OnInit {
       this.authService.register(name, email, password, role, fileId)
         .subscribe({
           next: (res) => {
+            this.userService.databaseHasUser.set(true);
             this.snackbarService.openSnackbar(res.message, 3000);
-
             this.router.navigate(['visualizza-resoconti']);
           },
           error: (err) => {

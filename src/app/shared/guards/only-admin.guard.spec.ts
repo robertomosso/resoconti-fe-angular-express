@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { CanActivateFn } from '@angular/router';
 
-import { registerSuperuserGuard } from './register-superuser.guard';
+import { onlyAdminGuard } from './only-admin.guard';
 
-describe('registerSuperuserGuard', () => {
+describe('onlyAdminGuard', () => {
   const executeGuard: CanActivateFn = (...guardParameters) => 
-      TestBed.runInInjectionContext(() => registerSuperuserGuard(...guardParameters));
+      TestBed.runInInjectionContext(() => onlyAdminGuard(...guardParameters));
 
   beforeEach(() => {
     TestBed.configureTestingModule({});

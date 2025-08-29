@@ -7,7 +7,7 @@ import { environment } from '../../../environments/environment';
 import { UserModel } from '../interfaces/user.interface';
 import { LoginResponse } from '../interfaces/login-response.interface';
 import { RegisterResponse } from '../interfaces/register-response.interface';
-import { Role } from '../interfaces/role.enum';
+import { Role } from '../enums/role.enum';
 import { SnackbarService } from './snackbar.service';
 
 @Injectable({
@@ -23,15 +23,6 @@ export class AuthService {
     private readonly snackbarService: SnackbarService,
     private readonly router: Router,
   ) { }
-
-  registerSuperuser(name: string, email: string, password: string, fileId = null): Observable<RegisterResponse> {
-    return this.httpClient.post<RegisterResponse>(`${environment.baseUrl}/auth/register-superuser`, {
-      name,
-      email,
-      password,
-      fileId
-    });
-  }
 
   register(name: string, email: string, password: string, role = Role.User, fileId = null): Observable<RegisterResponse> {
     const endpoint = role === Role.Admin ? 'register-admin' : 'register-user';

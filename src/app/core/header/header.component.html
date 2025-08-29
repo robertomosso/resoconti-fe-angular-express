@@ -3,7 +3,7 @@
 
 	<div class="nav-logout">
 		@if (authService.user) {
-			@if (authService.user.role && [Role.Superuser, Role.Admin].includes(authService.user.role)) {
+			@if (!authService.user.mustChangePassword && authService.user.role && authService.user.role === Role.Admin) {
 			<nav>
 				<li>
 					<a mat-button routerLink="/register">Registra nuovo utente</a>

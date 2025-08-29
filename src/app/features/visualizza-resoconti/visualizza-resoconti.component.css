@@ -1,6 +1,11 @@
 .container {
     margin-top: 3rem;
-    width: 80vw;
+    width: 85vw;
+}
+
+.table-container {
+    height: 40rem;
+    overflow: auto;
 }
 
 table {
@@ -9,7 +14,7 @@ table {
 
 .mat-column-dataInizio, 
 .mat-column-dataFine {
-    width: 7%;
+    width: 8%;
 }
 
 .mat-column-tipoAttivita {

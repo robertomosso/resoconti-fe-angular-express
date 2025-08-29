@@ -10,7 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { CardComponent } from '../../shared/components/card/card.component';
 import { SnackbarService } from '../../shared/services/snackbar.service';
 import { ErrorHandlerService } from '../../shared/services/error-handler.service';
-import { Role } from '../../shared/interfaces/role.enum';
+import { Role } from '../../shared/enums/role.enum';
 import { AuthService } from '../../shared/services/auth.service';
 
 @Component({
@@ -74,7 +74,7 @@ export class LoginComponent implements OnInit {
               this.router.navigate(['change-password']);
             } else {
               // in base a ruolo cambiare navigate, role user va su inserimento-resoconto, altrimenti su visualizzazione-resoconti
-              if (this.authService.user?.role && [Role.Superuser, Role.Admin].includes(this.authService.user?.role)) {
+              if (this.authService.user?.role && this.authService.user?.role === Role.Admin) {
                 this.router.navigate(['visualizza-resoconti']); 
               } else {
                 this.router.navigate(['inserimento-resoconto']);
