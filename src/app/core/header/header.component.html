@@ -1,22 +1,53 @@
 <header>
-	<h1>Gestione Resoconti</h1>
+	<div class="title-nav-container">
+		<h1>Gestione Resoconti</h1>
 
-	<div class="nav-logout">
+		@if (
+		authService.user &&
+		!authService.user.mustChangePassword &&
+		authService.user.role &&
+		authService.user.role
+		=== Role.Admin
+		) {
+		<nav>
+			<ul>
+				<li>
+					<button class="menu-button" mat-button [matMenuTriggerFor]="utenti">
+						<span>Utenti</span>
+						<mat-icon>keyboard_arrow_down</mat-icon>
+					</button>
+					<mat-menu #utenti="matMenu">
+						<button mat-menu-item routerLink="/register">Registra nuovo utente</button>
+					</mat-menu>
+				</li>
+				<li>
+					<button class="menu-button" mat-button [matMenuTriggerFor]="resoconti">
+						<span>Resoconti</span>
+						<mat-icon>keyboard_arrow_down</mat-icon>
+					</button>
+					<mat-menu #resoconti="matMenu">
+						<button mat-menu-item routerLink="/visualizza-resoconti">Visualizza Resoconti</button>
+						<button mat-menu-item routerLink="/inserimento-resoconto">Inserisci Resoconto</button>
+					</mat-menu>
+				</li>
+			</ul>
+		</nav>
+		}
+	</div>
+
+	<div class="logout">
 		@if (authService.user) {
-			@if (!authService.user.mustChangePassword && authService.user.role && authService.user.role === Role.Admin) {
-			<nav>
-				<li>
-					<a mat-button routerLink="/register">Registra nuovo utente</a>
-				</li>
-				<li>
-					<a mat-button routerLink="/visualizza-resoconti">Visualizza Resoconti</a>
-				</li>
-				<li>
-					<a mat-button routerLink="/inserimento-resoconto">Inserisci Resoconto</a>
-				</li>
-			</nav>
-			}
-		<button class="logout-button" mat-button (click)="logout()">Logout</button>
+		@if (!authService.user.mustChangePassword && authService.user.role && authService.user.role === Role.Admin) {
+		}
+
+		{{authService.user.name}}
+		
+		<button mat-icon-button [matMenuTriggerFor]="menu">
+			<mat-icon>account_circle</mat-icon>
+		</button>
+		<mat-menu #menu="matMenu">
+			<button class="logout-button" mat-menu-item (click)="logout()">Logout</button>
+		</mat-menu>
 		}
 	</div>
 </header>

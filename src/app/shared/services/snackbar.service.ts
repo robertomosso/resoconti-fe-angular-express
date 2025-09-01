@@ -11,8 +11,8 @@ export class SnackbarService {
   openSnackbar(message: string, duration = 10000) {
     this.snackBar.open(message, 'Chiudi', {
       duration,
-      horizontalPosition: 'center',
-      verticalPosition: 'top'
+      horizontalPosition: 'end',
+      verticalPosition: 'bottom'
     });
   }
 }
