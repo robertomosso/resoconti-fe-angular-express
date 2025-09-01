@@ -1,6 +1,6 @@
 <header>
 	<div class="title-nav-container">
-		<h1>Gestione Resoconti</h1>
+		<span class="title">Gestione Resoconti</span>
 
 		@if (
 		authService.user &&
@@ -37,11 +37,10 @@
 
 	<div class="logout">
 		@if (authService.user) {
-		@if (!authService.user.mustChangePassword && authService.user.role && authService.user.role === Role.Admin) {
-		}
+		<span class="username">
+			{{authService.user.name}}
+		</span>
 
-		{{authService.user.name}}
-		
 		<button mat-icon-button [matMenuTriggerFor]="menu">
 			<mat-icon>account_circle</mat-icon>
 		</button>
